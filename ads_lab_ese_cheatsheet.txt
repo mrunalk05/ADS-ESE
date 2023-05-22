@@ -83,4 +83,10 @@ For MySQL distributed :
 11.cluster.connect('root@localhost:3320');  -- set global read_only==OFF;
 
 
+
+
+Cassandra10 clustering
+bit.ly/Cassandra10
+
+
 __________________________________________________________________________________________
