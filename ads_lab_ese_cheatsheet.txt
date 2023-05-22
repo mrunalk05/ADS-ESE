@@ -87,6 +87,7 @@ For MySQL distributed :
 
 Cassandra10 clustering
 bit.ly/Cassandra10
-
+cassandra.bat -f  =>in bin cmd
+nodetool status
 
 __________________________________________________________________________________________
