@@ -1,0 +1,195 @@
+CREATE DATABASE salesDB;
+USE salesDB;
+
+
+CREATE TABLE Headqarters (
+    City_id INT NOT NULL,
+    City_name VARCHAR(50),
+    Headquarter_addr VARCHAR(100),
+    State VARCHAR(50),
+    Time DATETIME,
+    PRIMARY KEY (City_id)
+);
+
+CREATE TABLE Stores (
+    Store_id INT NOT NULL,
+    City_id INT,
+    Phone VARCHAR(20),
+    Time DATETIME,
+    PRIMARY KEY (Store_id),
+    FOREIGN KEY (City_id) REFERENCES Headqarters(City_id)
+);
+
+CREATE TABLE Items (
+    Item_id INT NOT NULL PRIMARY KEY,
+    Description VARCHAR(100),
+    Size VARCHAR(20),
+    Weight DECIMAL(10,2),
+    Unit_price DECIMAL(10,2),
+    Time DATETIME
+);
+
+CREATE TABLE Stored_items (
+    Store_id INT NOT NULL,
+    Item_id INT NOT NULL,
+    Quantity_held INT,
+    Time DATETIME,
+    PRIMARY KEY (Store_id, Item_id),
+    FOREIGN KEY (Store_id) REFERENCES Stores(Store_id),
+    FOREIGN KEY (Item_id) REFERENCES Items(Item_id)
+);
+
+CREATE TABLE `Order` (
+    Order_no INT NOT NULL PRIMARY KEY,
+    Order_date DATE,
+    Customer_id INT
+    -- FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id)
+);
+
+CREATE TABLE Ordered_item (
+    Order_no INT NOT NULL,
+    Item_id INT NOT NULL,
+    Quantity_ordered INT,
+    Ordered_price DECIMAL(10,2),
+    Time DATETIME,
+    PRIMARY KEY (Order_no, Item_id),
+    FOREIGN KEY (Order_no) REFERENCES `Order`(Order_no),
+    FOREIGN KEY (Item_id) REFERENCES Items(Item_id)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+-- *****************
+USE salesDB;
+
+INSERT INTO Stores (Store_id, City_id, Phone, Time)
+VALUES 
+(1, 23, '9889988998', '2023-03-15 12:00:00'),
+(2, 22, '9889988991', '2023-03-16 09:30:00'),
+(3, 21, '9889988992', '2023-03-17 14:45:00'),
+(4, 19, '9889988993', '2023-03-18 16:00:00'),
+(5, 20, '9889988994', '2023-03-19 10:15:00');
+
+
+INSERT INTO Items (Item_id, Description, Size, Weight, Unit_price, Time)
+VALUES 
+(1, 'Widget A', 'Small', 1.5, 12.99, '2023-03-15 12:00:00'),
+(2, 'Widget B', 'Large', 2.5, 24.99, '2023-03-16 09:30:00'),
+(3, 'Thingamajig', 'Medium', 0.75, 7.99, '2023-03-17 14:45:00'),
+(4, 'Doohickey', 'Extra Large', 4.0, 49.99, '2023-03-18 16:00:00'),
+(5, 'Gizmo', 'Tiny', 0.1, 2.99, '2023-03-19 10:15:00');
+
+
+INSERT INTO Stored_items (Store_id, Item_id, Quantity_held, Time)
+VALUES 
+(1, 1, 100, '2023-03-15 12:00:00'),
+(1, 2, 50, '2023-03-16 09:30:00'),
+(2, 3, 200, '2023-03-17 14:45:00'),
+(2, 4, 25, '2023-03-18 16:00:00'),
+(3, 5, 75, '2023-03-19 10:15:00');
+
+
+INSERT INTO `Order` (Order_no, Order_date, Customer_id)
+VALUES 
+(1001, '2023-03-15', 1),
+(1002, '2023-03-16', 2),
+(1003, '2023-03-17', 3),
+(1004, '2023-03-18', 1),
+(1005, '2023-03-19', 2);
+
+
+INSERT INTO Ordered_item (Order_no, Item_id, Quantity_ordered, Ordered_price, Time)
+VALUES 
+(1001, 1, 5, 20.00, '2023-03-15 12:00:00'),
+(1001, 2, 3, 15.00, '2023-03-15 12:00:00'),
+(1002, 3, 2, 10.00, '2023-03-16 09:30:00'),
+(1003, 4, 1, 5.00, '2023-03-17 14:45:00'),
+(1004, 5, 4, 8.00, '2023-03-18 16:00:00');
+
+
+
+SELECT * FROM salesdb.items;
+
+
+
+
+
+
+//Headquaters
+
+CREATE DATABASE headquarterDB;
+USE headquarterDB;
+
+CREATE TABLE Customer (
+  Customer_id INT PRIMARY KEY,
+  Customer_name VARCHAR(50),
+  City_id INT,
+  First_order_date DATE
+);
+
+CREATE TABLE Walk_in_customers (
+  Customer_id INT,
+  tourism_guide VARCHAR(50),
+  Time DATETIME,
+  FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id)
+);
+
+CREATE TABLE Mail_order_customers (
+  Customer_id INT,
+  post_address VARCHAR(100),
+  Time DATETIME,
+  FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id)
+);
+
+CREATE TABLE Headquarter (
+  City_id INT PRIMARY KEY,
+  City_name VARCHAR(50),
+  Headquarter_addr VARCHAR(100),
+  State VARCHAR(50),
+  Time DATETIME
+);
+
+
+
+
+-- *************************
+
+
+
+
+INSERT INTO Customer (Customer_id, Customer_name, City_id, First_order_date) VALUES
+(1, 'John Smith', 1, '2022-01-01'),
+(2, 'Jane Doe', 2, '2022-01-15'),
+(3, 'Bob Johnson', 3, '2022-02-01'),
+(4, 'Samantha Lee', 1, '2022-02-15'),
+(5, 'David Kim', 2, '2022-03-01');
+
+INSERT INTO Walk_in_customers (Customer_id, tourism_guide, Time) VALUES
+(1, 'Tour Guide A', '2022-01-01 10:00:00'),
+(2, 'Tour Guide B', '2022-01-15 11:00:00'),
+(3, 'Tour Guide C', '2022-02-01 12:00:00'),
+(4, 'Tour Guide A', '2022-02-15 10:00:00'),
+(5, 'Tour Guide B', '2022-03-01 11:00:00');
+
+INSERT INTO Mail_order_customers (Customer_id, post_address, Time) VALUES
+(1, '123 Main St, Anytown USA', '2022-01-01 10:00:00'),
+(2, '456 Elm St, Othertown USA', '2022-01-15 11:00:00'),
+(3, '789 Maple St, Thirdtown USA', '2022-02-01 12:00:00'),
+(4, '123 Main St, Anytown USA', '2022-02-15 10:00:00'),
+(5, '456 Elm St, Othertown USA', '2022-03-01 11:00:00');
+
+INSERT INTO Headquarter (City_id, City_name, Headquarter_addr, State, Time) VALUES
+(1, 'Anytown', '111 Main St, Anytown USA', 'CA', '2022-01-01 10:00:00'),
+(2, 'Othertown', '222 Elm St, Othertown USA', 'NY', '2022-01-15 11:00:00'),
+(3, 'Thirdtown', '333 Maple St, Thirdtown USA', 'TX', '2022-02-01 12:00:00'),
+(4, 'Fourthtown', '789 Maple St, Thirdtown USA', 'TX', '2022-02-01 12:00:00'),
+(5, 'Fifthtown', '456 Elm St, Othertown USA', 'TX', '2022-03-01 11:00:00');
