@@ -1,0 +1,86 @@
+Notes :
+For MySQL :
+1. pip install mysql-connector-python
+2. Connect With MySql Client -  
+   import mysql.connector as sql
+   m=sql.connect(host="localhost",user="root",passwd="system",database="ads3") 
+3. CRUD Data :
+   cursor=m.cursor();
+   st="update student set id=10169 where id=1 "
+   cursor.execute(st);
+   st="select * from student "
+   cursor.execute(st);
+   students =cursor.fetchall();
+   return render (request,'home.html',{'students': students}) 
+________________________________________________________________________________________
+For MongoDB: 
+1. pip install pymongo
+2. Connection :
+	from pymongo import MongoClient
+	cluster= MongoClient("mongodb+srv://lokesh:lokesh@cluster0.icp4ote.mongodb.net/")
+	db=cluster["faculties"]
+	collection=db["sir"]
+3.CRUD :
+	collection.insert_one({"Name" : 'Momin' ,"Age" : 45})
+	def HomePage(request):
+   	sirs=list(collection.find())
+   	context = {'sirs' :sirs}
+   	return render(request,'home.html',{'sirs':sirs});
+sirs = list(collection.find())
+collection.update_one({"Name": "Momin"}, {"$set": {"Age": 50}})
+collection.delete_one({"Name": "Momin"})
+__________________________________________________________________________________________________
+For  Neo4j:
+1. Insert : 
+CREATE (s:Student {name: 'John Doe', age: 20})
+CREATE (d:Department {name: 'Computer Science'})
+CREATE (s)-[:belongsTo]->(d)
+2.Read : 
+MATCH (s:Student)-[:belongsTo]->(d:Department)
+WHERE s.name = 'John Doe'
+RETURN s, d
+3.Update :
+MATCH (s:Student)-[r:belongsTo]->(oldDept:Department)
+WHERE s.name = 'John Doe'
+SET r.relationshipProperty = 'new value'
+WITH oldDept, s
+MERGE (newDept:Department {name: 'Mathematics'})
+CREATE (s)-[:belongsTo]->(newDept)
+DELETE r
+4.Delete :
+MATCH (s:Student)-[r:belongsTo]->(:Department)
+WHERE s.name = 'John Doe'
+DELETE r, s
+________________________________________________________________________________________
+For Cassandra :
+1.Connection :
+from cassandra.cluster import Cluster
+from cassandra.auth import PlainTextAuthProvider
+auth_provider = PlainTextAuthProvider(username='cassandra', password='cassandra')
+cluster = Cluster(['localhost'], auth_provider=auth_provider)
+session = cluster.connect('mrunal_db')
+CRUD:
+ query = "INSERT INTO friend (name, address, phone_number) VALUES (%s, %s, %s)"
+    session.execute(query, (name, address, phone_number))
+ query = "SELECT * FROM friend WHERE name = %s"
+    rows = session.execute(query, (name,))
+ query = "UPDATE friend SET address = %s, phone_number = %s WHERE name = %s"
+    session.execute(query, (address, phone_number, name))
+ query = "DELETE FROM friend WHERE name = %s"
+    session.execute(query, (name,))
+___________________________________________________________________________________________
+For MySQL distributed :
+1.dba.deploySandboxInstance(3310);
+2.dba.deploySandboxInstance(3320);
+3.dba.deploySandboxInstance(3330);
+4.var cluster=dba.createCluster('devCluster')
+5.cluster.status()
+6.cluster.addInstance('root@localhost:3330')
+7.cluster.addInstance('root@localhost:3320')
+8.cluster.status();
+9.\sql
+10.create database db; Create table ; Insert Record;
+11.cluster.connect('root@localhost:3320');  -- set global read_only==OFF;
+
+
+__________________________________________________________________________________________
