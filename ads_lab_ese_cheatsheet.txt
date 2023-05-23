@@ -84,10 +84,36 @@ For MySQL distributed :
 
 
 
-
 Cassandra10 clustering
 bit.ly/Cassandra10
 cassandra.bat -f  =>in bin cmd
 nodetool status
+
+
+
+
+Assignment8
+MASTER
+dba.deploySandboxInstance(3310);
+shell.connect('root@localhost:3310')
+var cluster=dba.createCluster('ass8CLuster')
+cluster.status()
+
+NODE1
+dba.deploySandboxInstance(3320);
+
+NODE2:
+dba.deploySandboxInstance(3330);
+
+MASTER:
+ cluster.addInstance('root@localhost:3320')
+cluster.addInstance('root@localhost:3330')
+ cluster.status()
+
+Node1
+ dba.checkInstanceConfiguration('root@adsnode1:3310')
+ dba.checkInstanceConfiguration('root@adsnode1:3330')
+ 
+Mysql workbench cnnection
 
 __________________________________________________________________________________________
