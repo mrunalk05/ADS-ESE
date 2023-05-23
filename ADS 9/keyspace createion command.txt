@@ -1,0 +1,11 @@
+CREATE KEYSPACE my_keyspace
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
+
+USE my_keyspace;
+
+
+CREATE TABLE my_table (
+    id UUID PRIMARY KEY,
+    name text,
+    age int
+);
